@@ -1,0 +1,13 @@
+services:
+  hanzifun:
+    image: ghcr.io/lu920115/hanzifun:latest
+    container_name: hanzifun
+    restart: unless-stopped
+    ports:
+      - "8089:80"
+    networks:
+      - hanzifun-net
+
+networks:
+  hanzifun-net:
+    driver: bridge
