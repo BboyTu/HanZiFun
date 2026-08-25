@@ -98,6 +98,52 @@ npm run build   # 完整生产构建，输出 dist/
 
 `npm run build` 依次完成：生成 Tailwind CSS → PWA 图标 → vendor 资源（fflate / jsPDF / 楷体子集字体）→ 笔顺数据（ZIP 包 + 分块脚本 + 索引 + 拼音）→ 压缩 HTML / CSS / JS → 输出 `dist/`。
 
+## Docker 部署
+
+已提供现成镜像，支持 `linux/amd64` 和 `linux/arm64`：
+
+- Docker Hub：`lu920115/hanzifun:latest`
+- GitHub Container Registry：`ghcr.io/lu920115/hanzifun:latest`
+
+### 使用 Docker Compose
+
+创建 `docker-compose.yml`：
+
+```yaml
+services:
+  hanzifun:
+    image: lu920115/hanzifun:latest   # 或 ghcr.io/lu920115/hanzifun:latest
+    container_name: hanzifun
+    restart: unless-stopped
+    ports:
+      - "8089:80"
+    networks:
+      - hanzifun-net
+
+networks:
+  hanzifun-net:
+    driver: bridge
+```
+
+启动：
+
+```bash
+docker compose up -d
+```
+
+浏览器访问 `http://<服务器IP>:8089/`。
+
+### 自己构建镜像
+
+```bash
+docker build -t hanzifun:latest .
+docker run -d -p 8089:80 --name hanzifun hanzifun:latest
+```
+
+### 反向代理 / HTTPS
+
+容器内部使用 Caddy 监听 80 端口。生产环境建议在它前面加一层反向代理（如 Lucky、Nginx Proxy Manager、Caddy、Traefik）处理 HTTPS 和域名。
+
 ## 项目结构
 
 ```
