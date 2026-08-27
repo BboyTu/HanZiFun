@@ -354,5 +354,324 @@
     <script src="data/stroke-index.js"></script>
     <script src="data/pinyin.js"></script>
     <script src="app.js"></script>
+
+    <!-- ===== 咖啡杯打赏组件 ===== -->
+    <div id="coffee-widget">
+      <div class="close-btn" title="关闭">×</div>
+      <div class="coffee-cup">
+        <svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
+          <path d="M6 1v3M10 1v3M14 1v3" />
+        </svg>
+      </div>
+      <div class="qr-popup">
+        <div class="qr-row">
+          <div class="qr-item">
+            <img src="icons/wechat-qr5.png" alt="微信赞赏码" />
+            <span class="qr-label">赞赏支持</span>
+          </div>
+          <div class="qr-item">
+            <img src="icons/wechat-qr6.png" alt="微信公众号" />
+            <span class="qr-label">关注公众号</span>
+          </div>
+        </div>
+      </div>
+      <div class="bmc-text">Buy me a coffee</div>
+    </div>
+    <style>
+      #coffee-widget {
+        position: fixed;
+        right: max(16px, 4vw);
+        top: auto;
+        bottom: max(120px, 22vh);
+        z-index: 9999;
+        cursor: grab;
+        user-select: none;
+        touch-action: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      #coffee-widget:active { cursor: grabbing; }
+      .coffee-cup {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #FFDD00 0%, #FFC107 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        color: #5d4037;
+        position: relative;
+        animation: cupFloat 3s ease-in-out infinite;
+      }
+      .coffee-cup::before,
+      .coffee-cup::after {
+        content: '';
+        position: absolute;
+        top: 6px;
+        width: 3px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.75);
+        border-radius: 50%;
+        opacity: 0;
+        filter: blur(2px);
+        pointer-events: none;
+      }
+      .coffee-cup::before {
+        left: 34%;
+        animation: steamRise 2.5s ease-out infinite;
+      }
+      .coffee-cup::after {
+        left: 62%;
+        animation: steamRise 2.5s ease-out 1.25s infinite;
+      }
+      .coffee-cup:hover {
+        animation-play-state: paused;
+        transform: scale(1.15) rotate(-5deg);
+        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.5);
+      }
+      .qr-popup {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px) scale(0.8);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+      }
+      .qr-row {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: white;
+        padding: 16px;
+        border-radius: 16px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+      }
+      .qr-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+      }
+      .qr-item img {
+        border-radius: 8px;
+        object-fit: contain;
+        max-height: 180px;
+        width: auto;
+      }
+      .qr-label {
+        font-size: 12px;
+        color: #666;
+        white-space: nowrap;
+      }
+      #coffee-widget:hover .qr-popup {
+        transform: translateX(-50%) translateY(0) scale(1);
+        opacity: 1;
+        visibility: visible;
+      }
+      .close-btn {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        width: 18px;
+        height: 18px;
+        background: #ff4444;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        line-height: 1;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.2s;
+        z-index: 10000;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+      #coffee-widget:hover .close-btn { opacity: 1; }
+      .close-btn:hover {
+        background: #cc0000;
+        transform: scale(1.1);
+      }
+      @keyframes cupFloat {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        33% { transform: translateY(-5px) rotate(1.5deg); }
+        66% { transform: translateY(-3px) rotate(-1deg); }
+      }
+      @keyframes steamRise {
+        0% { opacity: 0; transform: translateY(0) translateX(0) scaleY(0.6) scaleX(1) rotate(0deg); }
+        12% { opacity: 0.85; transform: translateY(-6px) translateX(3px) scaleY(1.2) scaleX(0.9) rotate(3deg); }
+        35% { opacity: 0.6; transform: translateY(-16px) translateX(-4px) scaleY(2) scaleX(0.7) rotate(-5deg); }
+        60% { opacity: 0.3; transform: translateY(-28px) translateX(5px) scaleY(2.8) scaleX(0.55) rotate(4deg); }
+        100% { opacity: 0; transform: translateY(-42px) translateX(-2px) scaleY(3.5) scaleX(0.45) rotate(-2deg); }
+      }
+      .bmc-text {
+        margin-top: 10px;
+        font-size: 11px;
+        color: #fff;
+        background: #0099ff;
+        white-space: nowrap;
+        font-weight: 600;
+        padding: 4px 12px;
+        border-radius: 12px;
+        letter-spacing: 0.3px;
+        transition: all 0.2s;
+      }
+      @media (max-width: 768px) {
+        #coffee-widget {
+          right: 12px;
+          bottom: max(80px, 15vh);
+        }
+        .coffee-cup {
+          width: 48px;
+          height: 48px;
+        }
+        .qr-item img {
+          max-height: 140px;
+        }
+      }
+      #coffee-widget:hover .bmc-text {
+        background: #007acc;
+        transform: scale(1.05);
+      }
+    </style>
+    <script>
+      (function() {
+        var widget = document.getElementById('coffee-widget');
+        var isDragging = false;
+        var hasMoved = false;
+        var startX, startY, initialLeft, initialTop;
+        var hideTimer = null;
+
+        function getCurrentPos() {
+          var rect = widget.getBoundingClientRect();
+          return { left: rect.left, top: rect.top };
+        }
+
+        function resetToDefault() {
+          widget.style.left = '';
+          widget.style.top = '';
+          widget.style.right = '';
+          widget.style.bottom = '';
+          widget.style.display = '';
+        }
+
+        function startDrag(clientX, clientY) {
+          isDragging = true;
+          hasMoved = false;
+          var pos = getCurrentPos();
+          startX = clientX;
+          startY = clientY;
+          initialLeft = pos.left;
+          initialTop = pos.top;
+          widget.style.left = initialLeft + 'px';
+          widget.style.top = initialTop + 'px';
+          widget.style.right = 'auto';
+          widget.style.bottom = 'auto';
+          widget.style.cursor = 'grabbing';
+        }
+
+        function moveDrag(clientX, clientY) {
+          if (!isDragging) return;
+          var dx = clientX - startX;
+          var dy = clientY - startY;
+          if (Math.abs(dx) > 5 || Math.abs(dy) > 5) hasMoved = true;
+          var newLeft = initialLeft + dx;
+          var newTop = initialTop + dy;
+          widget.style.left = newLeft + 'px';
+          widget.style.top = newTop + 'px';
+          var rect = widget.getBoundingClientRect();
+          if (rect.left < 0) widget.style.left = '0px';
+          if (rect.top < 0) widget.style.top = '0px';
+          if (rect.right > window.innerWidth) widget.style.left = (window.innerWidth - rect.width) + 'px';
+          if (rect.bottom > window.innerHeight) widget.style.top = (window.innerHeight - rect.height) + 'px';
+        }
+
+        function endDrag() {
+          if (!isDragging) return;
+          isDragging = false;
+          widget.style.cursor = 'grab';
+          if (hasMoved) {
+            setTimeout(adjustPopupDirection, 50);
+          }
+        }
+
+        function adjustPopupDirection() {
+          var rect = widget.getBoundingClientRect();
+          var popup = widget.querySelector('.qr-popup');
+          var centerY = rect.top + rect.height / 2;
+          var screenMid = window.innerHeight / 2;
+          if (centerY < screenMid) {
+            popup.style.bottom = 'auto';
+            popup.style.top = '70px';
+          } else {
+            popup.style.top = 'auto';
+            popup.style.bottom = '70px';
+          }
+        }
+
+        function closeWidget() {
+          widget.style.display = 'none';
+          if (hideTimer) clearTimeout(hideTimer);
+          hideTimer = setTimeout(function() {
+            widget.style.display = 'flex';
+            resetToDefault();
+            adjustPopupDirection();
+          }, 60000);
+        }
+
+        widget.addEventListener('mousedown', function(e) {
+          if (e.button !== 0) return;
+          if (e.target.closest('.close-btn')) return;
+          e.preventDefault();
+          startDrag(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mousemove', function(e) {
+          moveDrag(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mouseup', endDrag);
+
+        widget.addEventListener('touchstart', function(e) {
+          if (e.target.closest('.close-btn')) return;
+          var touch = e.touches[0];
+          startDrag(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        document.addEventListener('touchmove', function(e) {
+          if (!isDragging) return;
+          e.preventDefault();
+          var touch = e.touches[0];
+          moveDrag(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        document.addEventListener('touchend', endDrag);
+
+        var closeBtn = widget.querySelector('.close-btn');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            closeWidget();
+          });
+        }
+
+        window.addEventListener('resize', function() {
+          if (!isDragging && widget.style.display !== 'none') {
+            adjustPopupDirection();
+          }
+        });
+
+        resetToDefault();
+        adjustPopupDirection();
+      })();
+    </script>
+    <!-- ===== 咖啡杯打赏组件结束 ===== -->
   </body>
 </html>
