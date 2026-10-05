@@ -114,6 +114,28 @@ const els = {
 };
 
 let settings = loadSettings();
+  // URL 参数支持（字卡联动）：?chars=两 三&tpl=trace&title=xxx
+function applyUrlParams() {
+  try {
+    const p = new URLSearchParams(location.search);
+    const chars = p.get('chars');
+    if (chars && chars.trim()) {
+      settings.inputText = chars.trim();
+      const el = document.querySelector('#inputText');
+      if (el) el.value = settings.inputText;
+    }
+    const tpl = p.get('tpl');
+    if (tpl && ['trace', 'stroke', 'blank', 'copy'].includes(tpl)) {
+      settings.template = tpl;
+      const el = document.querySelector('input[name="template"][value="' + tpl + '"]');
+      if (el) el.checked = true;
+    }
+    const title = p.get('title');
+    if (title) settings.title = title;
+  } catch (e) {}
+}
+applyUrlParams();
+
 let renderFrame = 0;
 let markerSequence = 0;
 let installPrompt = null;
